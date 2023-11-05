@@ -86,11 +86,42 @@ ph_nu3 = ph_nu3
 areacode= 48
 /////#///print('+','(',areacode,')', ph_nu1 ,ph_nu2, ' ', ph_nu3)'''
 
-ph_nu = []
+'''ph_nu = []
 ph_nu.append('+48 ')
 for i in range(9):
     if   i == 3 or i ==6:
         ph_nu.append('-')
     ph_nu.append(str(random.randint(0,9)))
-print(''.join(ph_nu))
+print(''.join(ph_nu))'''
 
+
+"""def fake_bin(x):
+    result = ""
+    for i in x:
+        if int(i) < 5:
+            result = result + "0"
+        else:
+            result = result + "1"
+    return result
+"""
+
+
+
+
+def invert(lst):
+    return [-x for x in lst]
+
+
+lst = [3,4,6,3,3,4,6]
+result = invert(lst)
+print(result)
+
+'''def count_sheep(n):
+    murmur = ''
+    for i in range(1, n + 1):
+        murmur += f"{i} sheep..."
+    return murmur
+
+n = 3
+result = count_sheep(n)
+print(result'''
