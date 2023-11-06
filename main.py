@@ -1,14 +1,16 @@
-def show_unsers_from(users_list: list)->None:
+
 
 from dane import users_list
 from utils.my_function import add_user_to, remove_user_from, show_users_from
-def gui()-> None:
-    while True:
-        print(f'Witaj użytkowniku \n'
-            f'1: Wyświetl użytkowników: \n'
-            f'2: Dodaj użytkownika: \n'
-            f'3: Usuń użytkownika: \n'
-            f'4: Modyfikuj użytkownika: \n'
+
+def show_users_from(users_list: list)->None:
+    def gui()-> None:
+        while True:
+         print(f'Witaj użytkowniku \n'
+                f'1: Wyświetl użytkowników: \n'
+                f'2: Dodaj użytkownika: \n'
+                f'3: Usuń użytkownika: \n'
+                f'4: Modyfikuj użytkownika: \n'
                  )
 
         menu_option = input('Podaj funkcję do wywołania: ')
@@ -17,8 +19,8 @@ def gui()-> None:
         match menu_option:
             case'0':
                 print('Kończę pracę.')
-                break
-            case '1':
+                 break:
+            case '1'
                 print("Wyświetlam listę użytkowników")
                 show_users_from(users_list)
             case '2':
