@@ -2,7 +2,7 @@
 stan_konta = int(stan_konta)// int-rodzaj zmiennej
 stan_konta = stan_konta + 500* 2
 print(stan_konta) //print Wyświetl '''
-import random
+
 
 '''x = 9
 y = x//3
@@ -68,6 +68,14 @@ for i in ph_no:
 if
     print(i, i, , end="")'''
 
+'''ph_nu = []
+ph_nu.append('+(48) ')
+for i in range(9):
+    if  i == 3 or i ==6:
+        ph_nu.append('-')
+    ph_nu.append(str(random.randint(0,9)))
+print(''.join(ph_nu))
+print('Maciej, zadzwoń do mnie, czekam!!!')'''
 
 '''import random as r
 ph_nu = []
@@ -86,15 +94,35 @@ ph_nu3 = ph_nu3
 areacode= 48
 /////#///print('+','(',areacode,')', ph_nu1 ,ph_nu2, ' ', ph_nu3)'''
 
-'''ph_nu = []
-ph_nu.append('+48 ')
+
+'''import unsers_list
+user = random.choice(unsers_list)
+ph_nu = []
+ph_nu = ['+(48) ']
 for i in range(9):
-    if   i == 3 or i ==6:
+    if i == 3 or i == 6:
         ph_nu.append('-')
-    ph_nu.append(str(random.randint(0,9)))
-print(''.join(ph_nu))'''
+    ph_nu.append(str(random.randint(0, 9)))
+phone_number = ''.join(ph_nu)
+
+print(f'{user["name"]}, zadzwoń do mnie, mój numer telefonu to: {phone_number}')
+'''
 
 
+
+'''unsers_name = ["Alice", "Bob", "Charlie", "David"]  # Add the names you want
+
+# Randomly select a name from the list
+name = random.choice(unsers_name)'''
+
+'''ph_nu = ['+(48) ']
+for i in range(9):
+    if i == 3 or i == 6:
+        ph_nu.append('-')
+    ph_nu.append(str(random.randint(0, 9))
+phone_number = ''.join(ph_nu)
+
+print(f'{name}, zadzwoń do mnie, mój numer telefonu to: {phone_number}')'''
 """def fake_bin(x):
     result = ""
     for i in x:
@@ -108,13 +136,13 @@ print(''.join(ph_nu))'''
 
 
 
-def invert(lst):
+'''def invert(lst):
     return [-x for x in lst]
 
 
 lst = [3,4,6,3,3,4,6]
 result = invert(lst)
-print(result)
+print(result)'''
 
 '''def count_sheep(n):
     murmur = ''
