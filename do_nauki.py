@@ -2,7 +2,7 @@
 stan_konta = int(stan_konta)// int-rodzaj zmiennej
 stan_konta = stan_konta + 500* 2
 print(stan_konta) //print Wyświetl '''
-import random
+
 
 '''x = 9
 y = x//3
@@ -110,10 +110,10 @@ print(f'{user["name"]}, zadzwoń do mnie, mój numer telefonu to: {phone_number}
 
 
 
-unsers_name = ["Alice", "Bob", "Charlie", "David"]  # Add the names you want
+'''unsers_name = ["Alice", "Bob", "Charlie", "David"]  # Add the names you want
 
 # Randomly select a name from the list
-name = random.choice(unsers_name)
+name = random.choice(unsers_name)'''
 
 '''ph_nu = ['+(48) ']
 for i in range(9):
