@@ -32,3 +32,4 @@ def gui()-> None:
                 print('to będzie zrobione niedługo')
 
     gui()
+
