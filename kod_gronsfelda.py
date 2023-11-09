@@ -26,20 +26,23 @@ def deszyfruj_gronsfeld(szyfrogram, haslo):
         tekst += deszyfrowany_znak
     return tekst
 
+klucz = input('SZYFRUJ: ')
 tekst_jawny = input('Wiadomość: ')
-klucz = input('Ustaw klucz: ')
+print('Wiadomość: ', tekst_jawny.upper())
 
 # Szyfrowanie
 szyfrogram = szyfruj_gronsfeld(tekst_jawny, klucz)
-print("Szyfrogram: ", szyfrogram)
-haslo = input('Podaj haslo: ')
+print("Szyfrogram: ", szyfrogram.upper())
+# Deszyfrowanie
 
+haslo = input('DESZYFRUJ: ')
+print("Odkodowywanie: ", szyfrogram.upper())
 if haslo == klucz:
     odszyfrowany_tekst = deszyfruj_gronsfeld(szyfrogram, haslo)
-    print("Odszyfrowany tekst:", odszyfrowany_tekst)
+    print("Odszyfrowany tekst:", odszyfrowany_tekst.upper())
 else:
     print("Podałeś złe hasło, ty nędzny hakerzyno")
-# Deszyfrowanie
+
 
 
 
