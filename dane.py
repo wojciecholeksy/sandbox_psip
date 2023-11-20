@@ -8,5 +8,5 @@ users_list:list = [
             {"name":"Wiktoria", "nick":"Wiki", "posts":123},
             {"name":"Monika", "nick":"Monia", "posts":1_000_000},
             {"name":"Kasia", "nick":"Kkk", "posts":1500},
-            {"name":"Agata", "Ajgaciu", "posts":3400},
+            {"name":"Agata", "nick":"Ajgaciu", "posts":3400},
 ]

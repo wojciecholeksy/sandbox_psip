@@ -1,4 +1,17 @@
 from dane import users_list
+
+############################################################
+def update_user(users_list: list[dict,dict]) -> None:
+    nick_of_user = input('podaj nick uzytkownika do modyfikacji')
+    print(nick_of_user)
+    for user in users_list:
+        if user['nick'] == nick_of_user:
+            print('Znaleziono !!!')
+            user['name'] = input('podaj nowe imię: ')
+            user['nick'] = input('podaj nową ksywę: ')
+            user['posts'] = int(input('podaj liczbę postów: '))
+
+
 def add_user_to(users_list:list) -> None:        #    .list informacja o tym że to bedzize lista       None - że nie zwróci nic
     """
     add object to list
@@ -10,7 +23,7 @@ def add_user_to(users_list:list) -> None:        #    .list informacja o tym że
     nick=input('Podaj nick')
     posts=input('Podaj liczbę postów')
     users_list.append({'name':name,'nick':nick, 'posts': posts})
-#add_user_to(users_list)
+
 def remove_user_from(users_list:list) -> None:
     """
     remove object from list
@@ -35,12 +48,54 @@ def remove_user_from(users_list:list) -> None:
         users_list.remove(tmp_list[numer-1])
 
     #users_list.remove(tmp_list[numer-1])
-remove_user_from(users_list)
+
+def show_users_from(users_list:list)->None:
+    for user in users_list:
+        print(f'Twój znajomy {user["name"]} dodał {user["posts"]} postów')
+
+def gui(users_list)->None:
+    while True:
+        print(f'MENU: \n'
+              f'0. Zakończ program\n'
+              f'1. Wyświetl uzytkowników\n'
+              f'2. Dodaj użytkownika\n'
+              f'3. Aktualizuj użytkownika\n'
+              f'4. Usuń użytkownika\n'
+              f'5. Modyfikuj użytkownika\n'
+              )
+        menu_opction=input('Podaj funkcję do wywołania ')
+        print(f'wybrano funkcję{menu_opction}')
+
+        match menu_opction:
+            case '0':
+                print('Kończę pracę ')
+                break
+            case '1':
+                print('Wyświetlanie listy użytkowników')
+                show_users_from(users_list)
+            case '2':
+                print('Dodaję użytkownika ')
+                add_user_to(users_list)
+            case '3':
+                print('Aktualizuj użytkownika')
+                update_user(users_list)
+            case '4':
+                print('Usuń użytkownika')
+                remove_user_from(users_list)
+            case '5':
+                print('Modyfikuję użytkownika')
+                #TODO do zrobienia funkcja
 
 
-#print(f'Twój znajomy {zmienna_na_dane[0]["nick"]} opublikował {zmienna_na_dane[0]["posts"]} postów!!!')         #    te f (f-string) przed ''klauzula w python do zmiennych jaką wstawiamy     []do którego elementu listy się odwołujemy
-
-for user in users_list:
-    print(f'Twój znajomy {user["name"]} dodał {user["posts"]} postów')
 
 
+
+def update_user(users_list: list[dict, dict]) -> None:
+    nick_of_user = input("Podaj nick użytkownika do modyfikacji:")
+    print(nick_of_user)
+    for user in users_list:
+        if user ["nick"] == nick_of_user:
+            print("Znaleziono !!!")
+            user['name']= input("Podaj nowe imię: ")
+            user['nick'] = input("Podaj nowA ksywkę: ")
+            user['posts'] = int(input("Podaj liczbę postów: "))
