@@ -5,7 +5,7 @@ import requests
 import folium
 import re
 # pobranie strony
-nazwa_miejscowości = ['Gdańsk','Mały_Płock']
+nazwa_miejscowości = ['Gdańsk']
 def get_coordinates_of(city:str)->[float,float]:
 
     adres_URL = f'https://pl.wikipedia.org/wiki/{city}'
@@ -23,15 +23,39 @@ def get_coordinates_of(city:str)->[float,float]:
 # for item in nazwa_miejscowości:
 #     print(get_coordinates_of(item))
 #Rysowanie mapy
-city = get_coordinates_of(city='Zamość')
-map = folium.Map(
-    location=get_coordinates_of(city='Zamość'),
-    tiles="OpenStreetMap",
-    zoom_start=14)
+user = {"city":'Mińsk_Mazowiecki',"name":"Monika", "nick":"Monia", "posts":1_000_000}
 
-for item in nazwa_miejscowości:
+def get_map_one_user(user:str)->None:
+    city = get_coordinates_of(user["city"])
+    map = folium.Map(
+        location=city,
+        tiles="OpenStreetMap",
+        zoom_start=14)
+
     folium.Marker(
         location=city,
-        popup='GEOINFORMATYKA RZĄDZI OU YEEEEAAAH'
+        popup=f'Tu rządzi: {user["name"]} z GEOINFORMATYKI 2023 \n OU YEAHHHH'
     ).add_to(map)
+    map.save(f'mapka_{user["name"]}.html')
+get_map_one_user(user)
+
+
+
+def get_map_of(users:list)->None:
+    map = folium.Map(
+        location=[52.3, 21.0],
+        titles="OpenStreetMap",
+        zoom_start=7,
+
+    )
+    for user in users:
+        folium.Marker(
+            location=get_coordinates_of(city=user["city"]),
+            popup=f'Użytkownik:{user["name"]} \n'
+                  f'Liczba postów {user["posts"]}'
+
+        ).add_to(map)
     map.save('mapka.html')
+from dane import users_list
+
+get_map_of(users_list)
