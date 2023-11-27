@@ -84,7 +84,7 @@ def gui(users_list)->None:
                 remove_user_from(users_list)
             case '5':
                 print('Modyfikuję użytkownika')
-                #TODO do zrobienia funkcja
+                update_user(users_list)
 
 
 
