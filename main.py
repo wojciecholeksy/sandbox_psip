@@ -4,4 +4,3 @@ from my_function import gui
 
 gui(users_list)
 
-
