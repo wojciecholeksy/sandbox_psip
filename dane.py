@@ -1,12 +1,12 @@
 users_list:list = [
             {
-                "city":'Zamość',"name":"Wojciech", "nick":"PanWowo", "posts":1},   #lista osób
+                "city":"Stężyca_(województwo_lubelskie)","name":"Wojciech", "nick":"PanWowo", "posts":1},   #lista osób
             {
                 "city":'Lublin', "name": "Andrzej", "nick":"Endrju",  "posts":60},
             {
                 "city":'Opoczno',"name":"Bartosz", "nick":"Baran", "posts":31231},
             {
-                "city":'Licheń',"name":"Kamil", "nick":"Kola", "posts":123},
+                "city":'Poznań',"name":"Kamil", "nick":"Kola", "posts":123},
             {
                 "city":'Brodnica',"name":"Marek", "nick":"Wiess", "posts":0},
             {
@@ -18,5 +18,5 @@ users_list:list = [
             {
                 "city":'Koszalin',"name": "Kasia", "nick":"Kkk", "posts":1500},
             {
-                "city":'Chrubieszów', "name":"Agata", "nick": "Ajgaciu" , "posts":3400},
+                "city":'Hrubieszów', "name":"Agata", "nick": "Ajgaciu" , "posts":3400},
 ]
