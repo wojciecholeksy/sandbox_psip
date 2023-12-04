@@ -1,4 +1,4 @@
-
+import requests
 
 
 ############################################################
@@ -178,3 +178,9 @@ def update_user(users_list: list[dict, dict]) -> None:
             user['nick'] = input("Podaj nowA ksywkę: ")
             user['posts'] = int(input("Podaj liczbę postów: "))
             user['city'] = input('Podaj miasto')
+
+
+
+def pogoda_z(miasto:str): #definiujemy funkcje do której dodajemy nazwe miata (typ danych string)
+    url = f"https://danepubliczne.imgw.pl/api/data/synop/station/{miasto}"  #zmienna z linkiem, a w nawiasie dzięki f"" dodajemy wartość zmiennej miasto
+    return requests.get(url).json() # od razu zwracamy to co funkcja wywołuje, bez zajmowania miejsca w pamięci
