@@ -149,21 +149,18 @@ def gui(users_list) -> None:
                 print('Dodaję użytkownika ')
                 add_user_to(users_list)
             case '3':
-                print('Aktualizuj użytkownika')
-                update_user(users_list)
-            case '4':
                 print('Usuń użytkownika')
                 remove_user_from(users_list)
-            case '5':
+            case '4':
                 print('Modyfikuję użytkownika')
                 update_user(users_list)
-            case '6':
+            case '5':
                 print('Rysuję mapę z użytkownikiem')
                 user = input('Podaj nazwę użytkownika do modyfikacji:')
                 for item in users_list:
                     if item['name'] == user:
                         get_map_one_user(item)
-            case '7':
+            case '6':
                 print('Rysuję mapę ze wszystkimi użytkownikami')
                 get_map_of(users_list)
 
