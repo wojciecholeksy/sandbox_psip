@@ -68,7 +68,7 @@ from dane import users_list
 # pobranie strony
 #nazwa_miejscowości = ['Gdańsk']
 
-
+###^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^MAPA^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 def get_coordinates_of(city: str) -> [float, float]:
     adres_URL = f'https://pl.wikipedia.org/wiki/{city}'   #pobieranie strony internetowej
 
