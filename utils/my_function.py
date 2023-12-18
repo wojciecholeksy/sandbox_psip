@@ -49,7 +49,7 @@ def remove_user_from() -> None:
     :param users_list: list - users list
     :return: None
     """
-    tmp_list = []
+    
     name = input('Podaj imię geoinformatyka, któru już nie jest samotny, aby usunąć go z listy przegrywów: ')
     sql_query_1 = f" SELECT * FROM public.geotinder WHERE name='{name}';"
     cursor.execute(sql_query_1)
