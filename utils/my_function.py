@@ -1,69 +1,94 @@
-import requests
+import psycopg2 as ps
+import requests as rq
+from bs4 import BeautifulSoup
+import folium
 
 
 ############################################################
-def update_user(users_list: list[dict, dict]) -> None:
-    nick_of_user = input('podaj nick uzytkownika do modyfikacji')
-    print(nick_of_user)
-    for user in users_list:
-        if user['nick'] == nick_of_user:
-            print('Znaleziono !!!')
-            user['name'] = input('podaj nowe imię: ')
-            user['nick'] = input('podaj nową ksywę: ')
-            user['posts'] = int(input('podaj liczbę postów: '))
+
+db_pharams = ps.connect(
+    database= 'postgres',
+    user= "postgres",
+    password= "psip2023",
+    host= "localhost",
+    port= 5432
+)
+
+cursor = db_pharams.cursor()
 
 
-def add_user_to(users_list: list) -> None:  # .list informacja o tym że to bedzize lista       None - że nie zwróci nic
-    """
-    add object to list
-    :param users_list: list - user list
-    :return: None
-    """
-    city = input('Podaj miasto')
-    name = input('Podaj imię')
-    nick = input('Podaj nick')
-    posts = input('Podaj liczbę postów')
-    users_list.append({'name': name, 'nick': nick, 'posts': posts, "city": city})
+def add_user_to() -> None:  # .list informacja o tym że to bedzize lista       None - że nie zwróci nic
+    city = input('Podaj miasto').strip()
+    name = input('Podaj imię').strip()
+    nick = input('Podaj nick').strip()
+    posts = input('Podaj liczbę postów').strip()
+    sql_query_1 = f"INSERT INTO public.geotinder(city, name, nick, posts)VALUES ('{city}','{name}', '{nick}','{posts}');"
+    cursor.execute(sql_query_1)
+    db_pharams.commit()
 
 
-def remove_user_from(users_list: list) -> None:
+def update_user() -> None:
+    nick_of_user = input('Podaj nick uzytkownika do modyfikacji')
+    sql_query_1 = f" SELECT * FROM public.geotinder WHERE nick =  '{nick_of_user}';"
+    cursor.execute(sql_query_1)
+    print('Znaleziono !!!')
+    city = input('Podaj nazwę nowego miasta: ').strip()
+    name = input('Podaj nowe imię: ').strip()
+    nick = input('Podaj nowy nick: ').strip()
+    posts = int(input('Podaj liczbę postów: ')).strip()
+    sql_query_2 = f"UPDATE public.geotinder SET city ='{city}',name ='{name}', nick ='{nick}',posts = '{posts}' WHERE nick = '{nick_of_user}';"
+    cursor.execute(sql_query_2)
+    db_pharams.commit()
+
+
+
+
+def remove_user_from() -> None:
     """
     remove object from list
     :param users_list: list - users list
     :return: None
     """
     tmp_list = []
-    name = input('Podaj imię użytkownika do usunięcia: ')
-    for user in users_list:
-        if user["name"] == name:  # musi być nawias kwadratowy ponieważ odwołujemy się do listy
-            tmp_list.append(user)
-            # users_list.remove(user)
+    name = input('Podaj imię geoinformatyka, któru już nie jest samotny, aby usunąć go z listy przegrywów: ')
+    sql_query_1 = f" SELECT * FROM public.geotinder WHERE name='{name}';"
+    cursor.execute(sql_query_1)
+    query_result = cursor.fetchall()
     print(f'Znaleziono użytkowników: ')
-    print('0: Usuń wszystkich ')
-    for numerek, user_to_be_removed in enumerate(tmp_list):
-        print(f'{numerek + 1}: {user_to_be_removed}')
-    numer = int(input(
-        f'Wybierz użytkownika do usunięcia: '))  # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
-    if numer == 0:
-        for user in tmp_list:
-            users_list.remove(user)
-    else:
-        users_list.remove(tmp_list[numer - 1])
 
+
+    for numerek, user_to_be_removed in enumerate(query_result):
+        print(f'{numerek + 1}: {user_to_be_removed}')
+    numer = int(input(f'Wybierz użytkownika do usunięcia: '))  # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
+    if numer == 0:
+        sql_query_2 = f"DELETE FROM public.geotinder: "
+        cursor.execute(sql_query_2)
+        db_pharams.commit()
+    else:
+        sql_query_2 = f"DELETE FROM public.geotinder WHERE name='{query_result[numer-1][2]}';"
+        cursor.execute(sql_query_2)
+        db_pharams.commit()
+
+
+
+    # for user in users_list:
+    #     if user["name"] == name:  # musi być nawias kwadratowy ponieważ odwołujemy się do listy
+    #         tmp_list.append(user)
+    # users_list.remove(user)
     # users_list.remove(tmp_list[numer-1])
 
 
-def show_users_from(users_list: list) -> None:
-    for user in users_list:
-        print(f'Twój znajomy {user["name"]} dodał {user["posts"]} postów')
+def show_users_from() -> None:
+    sql_query_1 = f' SELECT * FROM public.geotinder'
+    cursor.execute(sql_query_1)
+    query_result = cursor.fetchall()
+    for row in query_result:
+        print(f'Twój znajomy {row[2]} opublikował {row[4]} postów')
 
 
-from bs4 import BeautifulSoup
-import requests
-import folium
-from dane import users_list
 
-#import re
+
+#import
 
 # pobranie strony
 #nazwa_miejscowości = ['Gdańsk']
@@ -72,7 +97,7 @@ from dane import users_list
 def get_coordinates_of(city: str) -> [float, float]:
     adres_URL = f'https://pl.wikipedia.org/wiki/{city}'   #pobieranie strony internetowej
 
-    response = (requests.get(url=adres_URL))
+    response = (rq.get(url=adres_URL))
     response_html = BeautifulSoup(response.text, 'html.parser')
 
     response_html_latitude = response_html.select('.latitude')[1].text  # . (kropka) ponieważ class
@@ -89,32 +114,38 @@ def get_coordinates_of(city: str) -> [float, float]:
 
 
 
-def get_map_one_user(user: str) -> None:
-    city = get_coordinates_of(user["city"])
+def get_map_one_user() -> None:
+    city = input('Podaj miasto użytkownika: ')
+    sql_query_1 = f" SELECT * FROM public.geotinder WHERE city ='{city}';"
+    cursor.execute(sql_query_1)
+    query_result = cursor.fetchall()
+    city = get_coordinates_of(city)
     map = folium.Map(
         location=city,
         tiles="OpenStreetMap",
         zoom_start=14)
+    for user in query_result:
+        folium.Marker(location=city,
+        popup=f'Użytkownik: {user[2]} \n'
+        f' Liczba postów: {user[4]}'
+        ).add_to(map)
+    map.save(f'mapka_{query_result[0][1]}.html')
 
-    folium.Marker(
-        location=city,
-        popup=f'Tu rządzi: {user["name"]} z GEOINFORMATYKI 2023 \n OU YEAHHHH'
-    ).add_to(map)
-    map.save(f'mapka_{user["name"]}.html')
 
-
-
-def get_map_of(users: list[dict,dict]) -> None:
+def get_map_of() -> None:
     map = folium.Map(
         location=[52.3, 21.0],
         tiles="OpenStreetMap",
         zoom_start=7)
-    for user in users:
+    sql_query_1 = f" SELECT * FROM public.geotinder;"
+    cursor.execute(sql_query_1)
+    query_result = cursor.fetchall()
+    for user in query_result:
         folium.Marker(
-            location=get_coordinates_of(city=user['city']),
-            popup=f'Użytkownik: {user["name"]} \n'                  
-                  f'Liczba postów {user["posts"]}'
-        ).add_to(map)
+            location=get_coordinates_of(city=user[1]),
+            popup=f'Użytkownik: {user[2]} \n'                  
+            f'Liczba postów {user[4]}'
+            ).add_to(map)
         map.save('mapka.html')
 
 
@@ -123,17 +154,16 @@ from dane import users_list
 
 
 
-def gui(users_list) -> None:
+def gui() -> None:
     while True:
         print(f'MENU: \n'
               f'0. Zakończ program\n'
-              f'1. Wyświetl uzytkowników\n'
+              f'1. Wyświetl samotnych geoinformatyków z Twojej okolicy\n'
               f'2. Dodaj użytkownika\n'
-              f'3. Aktualizuj użytkownika\n'
-              f'4. Usuń użytkownika\n'
-              f'5. Modyfikuj użytkownika\n'
-              f'6. Dodaj mapkę z jednym użytkownikiem\n'
-              f'7. Dodaj mapkę ze wszystkimi użytkownikami\n'
+              f'3. Usuń użytkownika\n'
+              f'4. Modyfikuj użytkownika\n'
+              f'5. Dodaj mapkę z jednym samotnym geoinformatykiem\n'
+              f'6. Dodaj mapkę ze wszystkimi samotnymi geoinformatykami\n'
               )
         menu_opction = input('Podaj funkcję do wywołania ')
         print(f'wybrano funkcję{menu_opction}')
@@ -144,40 +174,41 @@ def gui(users_list) -> None:
                 break
             case '1':
                 print('Wyświetlanie listy użytkowników')
-                show_users_from(users_list)
+                show_users_from()
             case '2':
                 print('Dodaję użytkownika ')
-                add_user_to(users_list)
+                add_user_to()
             case '3':
                 print('Usuń użytkownika')
-                remove_user_from(users_list)
+                remove_user_from()
             case '4':
                 print('Modyfikuję użytkownika')
-                update_user(users_list)
+                update_user()
             case '5':
                 print('Rysuję mapę z użytkownikiem')
-                user = input('Podaj nazwę użytkownika do modyfikacji:')
-                for item in users_list:
-                    if item['name'] == user:
-                        get_map_one_user(item)
+                get_map_one_user()
             case '6':
                 print('Rysuję mapę ze wszystkimi użytkownikami')
-                get_map_of(users_list)
-
-
-def update_user(users_list: list[dict, dict]) -> None:
-    nick_of_user = input("Podaj nick użytkownika do modyfikacji:")
-    print(nick_of_user)
-    for user in users_list:
-        if user["nick"] == nick_of_user:
-            print("Znaleziono !!!")
-            user['name'] = input("Podaj nowe imię: ")
-            user['nick'] = input("Podaj nowA ksywkę: ")
-            user['posts'] = int(input("Podaj liczbę postów: "))
-            user['city'] = input('Podaj miasto')
+                get_map_of()
 
 
 
-def pogoda_z(miasto:str): #definiujemy funkcje do której dodajemy nazwe miata (typ danych string)
-    url = f"https://danepubliczne.imgw.pl/api/data/synop/station/{miasto}"  #zmienna z linkiem, a w nawiasie dzięki f"" dodajemy wartość zmiennej miasto
-    return requests.get(url).json() # od razu zwracamy to co funkcja wywołuje, bez zajmowania miejsca w pamięci
+
+
+# class User:
+#     def __init__(self, city, name, nick, posts):   #init oznacza rozpoczęcie, funkcja definiuje jakie parametry musi posiadać postać z klasy
+#         self.city = city
+#         self.name = name
+#         self.nick = nick
+#         self.posts = posts
+# def pogoda_z(miasto:str): #definiujemy funkcje do której dodajemy nazwe miata (typ danych string)
+#     url = f"https://danepubliczne.imgw.pl/api/data/synop/station/{miasto}"  #zmienna z linkiem, a w nawiasie dzięki f"" dodajemy wartość zmiennej miasto
+#     return rq.get(url).json() # od razu zwracamy to co funkcja wywołuje, bez zajmowania miejsca w pamięci
+#
+# npc_1 = User(city="Stężyca_(województwo_lubelskie)", name="Wojciech", nick="Panwowo", posts= 1)     #linijki służące do tworzenia obiektów
+# npc_2 = User(city="Lublin", name="Andrzej", nick="Endrju", posts= 60)         #od teraz powstaje npc z Lublina i "buum" już jest
+# print(npc_1.city)   #(nazwa klasy.wywoływany parametr)
+# print(npc_2.city)
+#
+# print(npc_1.pogoda_z(npc_1.city))
+# print(npc_2.pogoda_z(npc_2.city))

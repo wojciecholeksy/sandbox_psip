@@ -1,5 +1,9 @@
 
 import requests #import biblioteki zapytań
+from bs4 import BeautifulSoup
+import requests
+import folium
+from dane import users_list
 class User:  #tworzymy klase User (nazwy klas piszemy z wielkiej litery
     def __init__(self, miasto):  #self oznacza,
         self.miasto = miasto
@@ -17,3 +21,4 @@ print(npc_1.pogoda_z(npc_1.miasto))
 print(npc_2.pogoda_z(npc_2.miasto))
 
 pogoda_z("warszawa")
+
