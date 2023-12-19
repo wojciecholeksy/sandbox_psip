@@ -1,79 +1,61 @@
-import random
+###Beautifulsoap4
 
-import sqlalchemy
-import os
-import sqlalchemy.orm
-from dotenv import load_dotenv
-from faker import Faker
-from geoalchemy2 import Geometry
+from bs4 import BeautifulSoup
+import requests
+import folium
+import re
+# pobranie strony
+nazwa_miejscowości = ['Gdańsk']
+def get_coordinates_of(city:str)->[float,float]:
 
-load_dotenv()
+    adres_URL = f'https://pl.wikipedia.org/wiki/{city}'
 
+    response = (requests.get(url=adres_URL))
+    response_html = BeautifulSoup(response.text, 'html.parser')
 
-##paramaetr wywołujący parametr URL z sqlalch
-db_params = sqlalchemy.URL.create(
-    drivername= 'postgresql+psycopg2',
-    username=os.getenv("POSTGRES_USER"),
-    password=os.getenv("POSTGRES_PASSWORD"),
-    host=os.getenv("POSTGRES_HOST"),
-    database=os.getenv("POSTGRES_DB"),
-    port=os.getenv("POSTGRES_PORT")
-)
+    response_html_latitude = response_html.select('.latitude')[1].text  # . (kropka) ponieważ class
+    response_html_latitude = float(response_html_latitude.replace(',','.'))      #wynikiem jest string, a my chcemy liczbę dlatego zamieniamy przecinki na kropki i konwertujemy na float
+    response_html_longitude = response_html.select('.longitude')[1].text  # . (kropka) ponieważ class
+    response_html_longitude = float(response_html_longitude.replace(',','.'))
 
-engine = sqlalchemy.create_engine(db_params)
+    return[response_html_latitude, response_html_longitude]
 
-#definiujemy połączenie do silnika
-connection = engine.connect()
+# for item in nazwa_miejscowości:
+#     print(get_coordinates_of(item))
+#Rysowanie mapy
+user = {"city":'Mińsk_Mazowiecki',"name":"Monika", "nick":"Monia", "posts":1_000_000}
 
-Base= sqlalchemy.orm.declarative_base()
+def get_map_one_user(user:str)->None:
+    city = get_coordinates_of(user["city"])
+    map = folium.Map(
+        location=city,
+        tiles="OpenStreetMap",
+        zoom_start=14)
 
-class User(Base):
-    __tablename__ = "mm_table"
-
-    id = sqlalchemy.Column(sqlalchemy.Integer(), primary_key=True) #dla bazy danych intiger automatyczie taje typ serial (autonumerowanie)
-    name = sqlalchemy.Column(sqlalchemy.String(100), nullable=True)
-    location = sqlalchemy.Column('geom', Geometry(geometry_type='POINT', srid=4326), nullable=True)
-
-
-
-Base.metadata.create_all(engine)
-
-
-### Create, tworzty sesje(połaczenie) z naszą bazą danych z której/do któej będziemy coś przestłać
-
-Session = sqlalchemy.orm.sessionmaker(bind=engine) #tworzymy sesje jako klase(tworzymy jej realizacje)
-session = Session()
-
-lista_userow: list =[]
+    folium.Marker(
+        location=city,
+        popup=f'Tu rządzi: {user["name"]} z GEOINFORMATYKI 2023 \n OU YEAHHHH'
+    ).add_to(map)
+    map.save(f'mapka_{user["name"]}.html')
+get_map_one_user(user)
 
 
-fake = Faker()
 
-fake.name()
-for item in range(10_000):
-    lista_userow.append(
-        User(
-            name=fake.name(),
-            location=f'POINT({random.uniform(14,24)} {random.uniform(49,55)})'  # spacja, a nie przecinek
-        )
+def get_map_of(users:list)->None:
+    map = folium.Map(
+        location=[52.3, 21.0],
+        titles="OpenStreetMap",
+        zoom_start=7,
+
     )
+    for user in users:
+        folium.Marker(
+            location=get_coordinates_of(city=user["city"]),
+            popup=f'Użytkownik:{user["name"]} \n'
+                  f'Liczba postów {user["posts"]}'
 
-session.add_all(lista_userow)
-session.commit()
+        ).add_to(map)
+    map.save('mapka.html')
+from dane import users_list
 
-
-### Read /Select
-
-users_from_db = session.query(User).all()
-for user in users_from_db:
-    if user.name == 'Scott Wilkins':
-        user.query.filter_by(name='Scott Wilkins')
-    print(user.name)
-
-
-session.commit()
-
-
-session.flush()
-connection.close()
-engine.dispose()
+get_map_of(users_list)
