@@ -32,12 +32,19 @@ def update_user() -> None:
     nick_of_user = input('Podaj nick uzytkownika do modyfikacji')
     sql_query_1 = f" SELECT * FROM public.my_geotinder WHERE nick =  '{nick_of_user}';"
     cursor.execute(sql_query_1)
+    user_data = cursor.fetchone()
+
+    if not user_data:
+        print('Nie ma takiego geoinformatyka w Twojej okolicy. ')
+        return
+
     print('Znaleziono !!!')
-    city = input('Podaj nazwę nowego miasta: ').strip()
-    name = input('Podaj nowe imię: ').strip()
-    nick = input('Podaj nowy nick: ').strip()
-    posts = int(input('Podaj liczbę postów: ')).strip()
-    sql_query_2 = f"UPDATE public.my_geotinder SET city ='{city}',name ='{name}', nick ='{nick}',posts = '{posts}' WHERE nick = '{nick_of_user}';"
+    city = input('Podaj nazwę nowego miasta: ')
+    name = input('Podaj nowe imię: ')
+    nick = input('Podaj nowy nick: ')
+    posts = int(input('Podaj liczbę postów: '))
+
+    sql_query_2 = f"UPDATE public.my_geotinder SET city='{city}', name='{name}', nick='{nick}', posts='{posts}' WHERE nick='{nick_of_user}';"
     cursor.execute(sql_query_2)
     db_pharams.commit()
 
@@ -56,11 +63,11 @@ def remove_user_from() -> None:
         print(f'{numerek + 1}: {user_to_be_removed}')
     numer = int(input(f'Wybierz użytkownika do usunięcia: '))  # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
     if numer == 0:
-        sql_query_2 = f"DELETE FROM public.my_geotinder: "
+        sql_query_2 = f"DELETE  FROM  public.my_geotinder;"
         cursor.execute(sql_query_2)
         db_pharams.commit()
     else:
-        sql_query_2 = f"DELETE FROM public.my_geotinder WHERE name='{query_result[numer-1][2]}';"
+        sql_query_2 = f"DELETE FROM public.my_geotinder WHERE id='{query_result[numer-1][0]}';"
         cursor.execute(sql_query_2)
         db_pharams.commit()
 
