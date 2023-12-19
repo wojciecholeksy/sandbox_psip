@@ -17,26 +17,28 @@ db_pharams = ps.connect(
 cursor = db_pharams.cursor()
 
 
+
+
 def add_user_to() -> None:  # .list informacja o tym że to bedzize lista       None - że nie zwróci nic
     city = input('Podaj miasto').strip()
     name = input('Podaj imię').strip()
     nick = input('Podaj nick').strip()
     posts = input('Podaj liczbę postów').strip()
-    sql_query_1 = f"INSERT INTO public.geotinder(city, name, nick, posts)VALUES ('{city}','{name}', '{nick}','{posts}');"
+    sql_query_1 = f"INSERT INTO public.my_geotinder(city, name, nick, posts)VALUES ('{city}','{name}', '{nick}','{posts}');"
     cursor.execute(sql_query_1)
     db_pharams.commit()
 
 #
 def update_user() -> None:
     nick_of_user = input('Podaj nick uzytkownika do modyfikacji')
-    sql_query_1 = f" SELECT * FROM public.geotinder WHERE nick =  '{nick_of_user}';"
+    sql_query_1 = f" SELECT * FROM public.my_geotinder WHERE nick =  '{nick_of_user}';"
     cursor.execute(sql_query_1)
     print('Znaleziono !!!')
     city = input('Podaj nazwę nowego miasta: ').strip()
     name = input('Podaj nowe imię: ').strip()
     nick = input('Podaj nowy nick: ').strip()
     posts = int(input('Podaj liczbę postów: ')).strip()
-    sql_query_2 = f"UPDATE public.geotinder SET city ='{city}',name ='{name}', nick ='{nick}',posts = '{posts}' WHERE nick = '{nick_of_user}';"
+    sql_query_2 = f"UPDATE public.my_geotinder SET city ='{city}',name ='{name}', nick ='{nick}',posts = '{posts}' WHERE nick = '{nick_of_user}';"
     cursor.execute(sql_query_2)
     db_pharams.commit()
 
@@ -45,21 +47,21 @@ def update_user() -> None:
 
 def remove_user_from() -> None:
     name = input('Podaj imię geoinformatyka, któru już nie jest samotny, aby usunąć go z listy przegrywów: ')
-    sql_query_1 = f" SELECT * FROM public.geotinder WHERE name='{name}';"
+    sql_query_1 = f" SELECT * FROM public.my_geotinder WHERE name='{name}';"
     cursor.execute(sql_query_1)
     query_result = cursor.fetchall()
     print(f'Znaleziono użytkowników: ')
-
+    print('0: Usuń wszystkich ')
 
     for numerek, user_to_be_removed in enumerate(query_result):
         print(f'{numerek + 1}: {user_to_be_removed}')
-    numer = int(input(f'Wybierz użytkownika do usunięcia: '))  # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
+    numer = int(input(f'Wybierz użytkownika do usunięcia: '))                                        # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
     if numer == 0:
-        sql_query_2 = f"DELETE FROM public.geotinder: "
+        sql_query_2 = f"DELETE FROM public.my_geotinder: "
         cursor.execute(sql_query_2)
         db_pharams.commit()
     else:
-        sql_query_2 = f"DELETE FROM public.geotinder WHERE name='{query_result[numer-1][2]}';"
+        sql_query_2 = f"DELETE FROM public.my_geotinder WHERE name='{query_result[numer-1][2]}';"
         cursor.execute(sql_query_2)
         db_pharams.commit()
 
@@ -73,7 +75,7 @@ def remove_user_from() -> None:
 
 
 def show_users_from() -> None:
-    sql_query_1 = f' SELECT * FROM public.geotinder'
+    sql_query_1 = f' SELECT * FROM public.my_geotinder'
     cursor.execute(sql_query_1)
     query_result = cursor.fetchall()
     for row in query_result:
@@ -94,9 +96,9 @@ def get_coordinates_of(city: str) -> [float, float]:
     response = (rq.get(url=adres_URL))
     response_html = BeautifulSoup(response.text, 'html.parser')
 
-    response_html_latitude = response_html.select('.latitude')[1].text  # . (kropka) ponieważ class
-    response_html_latitude = float(response_html_latitude.replace(',','.'))  # wynikiem jest string, a my chcemy liczbę dlatego zamieniamy przecinki na kropki i konwertujemy na float
-    response_html_longitude = response_html.select('.longitude')[1].text  # . (kropka) ponieważ class
+    response_html_latitude = response_html.select('.latitude')[1].text                            # . (kropka) ponieważ class
+    response_html_latitude = float(response_html_latitude.replace(',','.'))                           # wynikiem jest string, a my chcemy liczbę dlatego zamieniamy przecinki na kropki i konwertujemy na float
+    response_html_longitude = response_html.select('.longitude')[1].text                              # . (kropka) ponieważ class
     response_html_longitude = float(response_html_longitude.replace(',', '.'))
 
     return [response_html_latitude, response_html_longitude]
@@ -110,7 +112,7 @@ def get_coordinates_of(city: str) -> [float, float]:
 
 def get_map_one_user() -> None:
     city = input('Podaj miasto użytkownika: ')
-    sql_query_1 = f" SELECT * FROM public.geotinder WHERE city ='{city}';"
+    sql_query_1 = f" SELECT * FROM public.my_geotinder WHERE city ='{city}';"
     cursor.execute(sql_query_1)
     query_result = cursor.fetchall()
     city = get_coordinates_of(city)
@@ -131,7 +133,7 @@ def get_map_of() -> None:
         location=[52.3, 21.0],
         tiles="OpenStreetMap",
         zoom_start=7)
-    sql_query_1 = f" SELECT * FROM public.geotinder;"
+    sql_query_1 = f" SELECT * FROM public.my_geotinder;"
     cursor.execute(sql_query_1)
     query_result = cursor.fetchall()
     for user in query_result:
