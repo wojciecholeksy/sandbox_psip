@@ -27,7 +27,7 @@ def add_user_to() -> None:  # .list informacja o tym że to bedzize lista       
     cursor.execute(sql_query_1)
     db_pharams.commit()
 
-#
+
 def update_user() -> None:
     nick_of_user = input('Podaj nick uzytkownika do modyfikacji')
     sql_query_1 = f" SELECT * FROM public.my_geotinder WHERE nick =  '{nick_of_user}';"
