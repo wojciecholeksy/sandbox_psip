@@ -17,18 +17,17 @@ db_pharams = ps.connect(
 cursor = db_pharams.cursor()
 
 
-
-
 def add_user_to() -> None:  # .list informacja o tym że to bedzize lista       None - że nie zwróci nic
     city = input('Podaj miasto').strip()
     name = input('Podaj imię').strip()
     nick = input('Podaj nick').strip()
     posts = input('Podaj liczbę postów').strip()
+
     sql_query_1 = f"INSERT INTO public.my_geotinder(city, name, nick, posts)VALUES ('{city}','{name}', '{nick}','{posts}');"
     cursor.execute(sql_query_1)
     db_pharams.commit()
 
-#
+
 def update_user() -> None:
     nick_of_user = input('Podaj nick uzytkownika do modyfikacji')
     sql_query_1 = f" SELECT * FROM public.my_geotinder WHERE nick =  '{nick_of_user}';"
@@ -55,7 +54,7 @@ def remove_user_from() -> None:
 
     for numerek, user_to_be_removed in enumerate(query_result):
         print(f'{numerek + 1}: {user_to_be_removed}')
-    numer = int(input(f'Wybierz użytkownika do usunięcia: '))                                        # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
+    numer = int(input(f'Wybierz użytkownika do usunięcia: '))  # wynikiem operacji inpunt jest string więc musimy zMIENIĆ go dalej na ineger
     if numer == 0:
         sql_query_2 = f"DELETE FROM public.my_geotinder: "
         cursor.execute(sql_query_2)
@@ -96,9 +95,9 @@ def get_coordinates_of(city: str) -> [float, float]:
     response = (rq.get(url=adres_URL))
     response_html = BeautifulSoup(response.text, 'html.parser')
 
-    response_html_latitude = response_html.select('.latitude')[1].text                            # . (kropka) ponieważ class
-    response_html_latitude = float(response_html_latitude.replace(',','.'))                           # wynikiem jest string, a my chcemy liczbę dlatego zamieniamy przecinki na kropki i konwertujemy na float
-    response_html_longitude = response_html.select('.longitude')[1].text                              # . (kropka) ponieważ class
+    response_html_latitude = response_html.select('.latitude')[1].text  # . (kropka) ponieważ class
+    response_html_latitude = float(response_html_latitude.replace(',','.'))  # wynikiem jest string, a my chcemy liczbę dlatego zamieniamy przecinki na kropki i konwertujemy na float
+    response_html_longitude = response_html.select('.longitude')[1].text  # . (kropka) ponieważ class
     response_html_longitude = float(response_html_longitude.replace(',', '.'))
 
     return [response_html_latitude, response_html_longitude]
