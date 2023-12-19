@@ -14,14 +14,14 @@ cursor = db_pharams.cursor()
 # engine = sqlalchemy.create_engine(db_pharam)
 # connection = engine.connect()
 
-def dodaj_uzytkownika(user:str):
+def import_user(user:str):
     for nick in users_list:
         if user == nick['nick']:
-            sql_query_1 = f"INSERT INTO public.facebook(city, name, nick, posts)VALUES ('{nick['city']}', '{nick['name']}','{nick['nick']}','{nick['posts']}');"
+            sql_query_1 = f"INSERT INTO public.my_geotinder(city, name, nick, posts)VALUES ('{nick['city']}', '{nick['name']}','{nick['nick']}','{nick['posts']}');"
             cursor.execute(sql_query_1)
             db_pharams.commit()
 
-dodaj_uzytkownika(input("Dodaj użytkownika o nicku: "))
+import_user(input("Dodaj użytkownika o nicku: "))
 
 
 # def usun_uzytkownika(user:str):
