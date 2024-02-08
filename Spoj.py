@@ -15,21 +15,20 @@ def czy_pierwsza():
         else:
             print("Nie")
 
-if __name__ == "__main__":
-    czy_pierwsza()
+
+# czy_pierwsza()
 
 
 def predokosc_srednia():
-t = int(input())
-for _ in range(t):
+    t = int(input())
+    for _ in range(t):
 
-    v1 = int(input())
-    v2 = int(input())
+        v1 = int(input())
+        v2 = int(input())
+        vs = (v1 + v2)//2
 
-    vs = (v1 + v2)//2
-
-    print(int(vs))
-predokosc_srednia()
+        print(int(vs))
+# predokosc_srednia()
 
 
 def predokosc_srednia_harmoniczna():     #średnia harmoniczna (mierzona w dwie strony)
@@ -40,8 +39,20 @@ def predokosc_srednia_harmoniczna():     #średnia harmoniczna (mierzona w dwie 
 
         print(int(vs))
 
-if __name__ == "__main__":
-    predokosc_srednia_harmoniczna()
+# predokosc_srednia_harmoniczna()
+
+
+def zadanie_probne():
+    a = int(input())
+    b = int(input())
+    # if a <=200 and b <=200:
+    print(a+b)
 
 
 
+# zadanie_probne()
+def zad_probne()->int:
+    A = int(input())
+    B = int(input())
+    print(A+B)
+zadanie_probne()
